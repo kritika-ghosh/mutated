@@ -1,0 +1,16 @@
+# Python Virtual Environments
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# Node Dependencies
+node_modules/
+dist/
+
+# Local/Sensitive Files
+.env
+backend/.env
+
+# Local Storage Databases & Sessions
+backend/data/
