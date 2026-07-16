@@ -1,42 +1,50 @@
 import os
 import uuid
+from typing import List
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException
-from app.models import SessionInitRequest
 from app.services.rag_service import RAGService
 
 router = APIRouter(prefix="/session", tags=["Session"])
 
-# Local simulation store for session state mapping
 ACTIVE_SESSIONS = {}
 
 @router.post("/init")
-async def initialize_session(goal: str = Form(...), file: UploadFile = File(None)):
-    """Initializes a track session, parses accompanying PDFs, and generates the blueprint."""
+async def initialize_session(
+    goal: str = Form(...), 
+    files: List[UploadFile] = File(None)  # Changed from single file to a typing List
+):
+    """Initializes a track session, parses a list of PDFs/Markdown documents, and indexes them."""
     session_id = f"sess_{uuid.uuid4().hex[:8]}"
-    uploaded_filename = "None"
+    processed_filenames = []
     
-    # 1. Process files if uploaded
-    if file:
-        uploaded_filename = file.filename
+    # 1. Process multiple documents if uploaded
+    if files:
         temp_dir = "./data/temp"
         os.makedirs(temp_dir, exist_ok=True)
-        temp_file_path = os.path.join(temp_dir, f"{session_id}_{file.filename}")
         
-        try:
-            with open(temp_file_path, "wb") as buffer:
-                content = await file.read()
-                buffer.write(content)
+        for file in files:
+            if not file.filename.strip():
+                continue
+                
+            processed_filenames.append(file.filename)
+            temp_file_path = os.path.join(temp_dir, f"{session_id}_{file.filename}")
             
-            # Index document text into the vector store
-            RAGService.process_and_store_document(temp_file_path, file.filename)
-            
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=f"File parsing error: {str(e)}")
-        finally:
-            if os.path.exists(temp_file_path):
-                os.remove(temp_file_path)
+            try:
+                # Stream file payload down to the temp environment
+                with open(temp_file_path, "wb") as buffer:
+                    content = await file.read()
+                    buffer.write(content)
+                
+                # Append chunks into the shared vector catalog collection
+                RAGService.process_and_store_document(temp_file_path, file.filename)
+                
+            except Exception as e:
+                raise HTTPException(status_code=500, detail=f"Error parsing {file.filename}: {str(e)}")
+            finally:
+                if os.path.exists(temp_file_path):
+                    os.remove(temp_file_path)
 
-    # 2. Mock baseline initial curriculum array for fast front-end wireframing
+    # 2. Setup baseline dynamic timeline map array
     initial_curriculum = [
         {
             "id": "node_1",
@@ -62,20 +70,19 @@ async def initialize_session(goal: str = Form(...), file: UploadFile = File(None
         }
     ]
     
-    # Save instance globally
+    # Save session state profile mapping parameters
     ACTIVE_SESSIONS[session_id] = {
         "session_id": session_id,
         "goal": goal,
-        "filename": uploaded_filename,
+        "filenames": processed_filenames,  # Track all added files
         "curriculum": initial_curriculum,
-        "agent_log": [{"timestamp": "2026-07-16T00:00:00Z", "message": "Blueprint initialized successfully."}]
+        "agent_log": [{"timestamp": "2026-07-16T00:00:00Z", "message": f"Blueprint initialized successfully with {len(processed_filenames)} resources."}]
     }
     
     return ACTIVE_SESSIONS[session_id]
 
 @router.get("/{session_id}/state")
 async def get_session_state(session_id: str):
-    """Retrieves full blueprint progress data tree maps."""
     if session_id not in ACTIVE_SESSIONS:
         raise HTTPException(status_code=404, detail="Active study track session not found.")
     return ACTIVE_SESSIONS[session_id]
