@@ -1,4 +1,5 @@
 # Python Virtual Environments
+store/
 venv/
 .venv/
 __pycache__/
