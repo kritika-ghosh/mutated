@@ -19,8 +19,10 @@ class QuizEngine:
         # 2. Instruct the model using strict pedagogical grounding rules
         system_prompt = (
             "You are an educational quiz generator. Generate exactly 3 multiple-choice questions "
-            "that test understanding of the concept requested. You must use ONLY the provided context "
-            "to formulate the questions and correct answers. Do not make things up.\n\n"
+            "that test understanding of the concept requested. You must use the provided context "
+            "to formulate the questions and correct answers. If the context is empty or does not "
+            "contain enough information about the topic, use your general knowledge of the topic to "
+            "generate the questions and answers.\n\n"
             "Format your complete response as a valid JSON object matching this schema structure:\n"
             "{\n"
             "  \"quiz_questions\": [\n"
@@ -34,10 +36,8 @@ class QuizEngine:
             "    }\n"
             "  ]\n"
             "}\n\n"
-            "If the provided context does not contain enough information to formulate questions on the topic, "
-            "or if the query is outside the scope of the context, you MUST still respond with a valid JSON object "
-            "where `quiz_questions` is an empty list, like: `{\"quiz_questions\": []}`. Do not output any conversational "
-            "refusal text outside of this JSON structure."
+            "Do not output any conversational text or explanations outside of this JSON structure. "
+            "You MUST reply with a valid JSON object containing the questions."
         )
         
         user_prompt = f"Topic to test: {node_description}\n\nRetrieved Context:\n{context}"
