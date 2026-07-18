@@ -21,17 +21,23 @@ class QuizEngine:
             "You are an educational quiz generator. Generate exactly 3 multiple-choice questions "
             "that test understanding of the concept requested. You must use ONLY the provided context "
             "to formulate the questions and correct answers. Do not make things up.\n\n"
-            "Format your complete response as a raw JSON array matching this schema structure:\n"
-            "[\n"
-            "  {\n"
-            "    \"id\": \"q_1\",\n"
-            "    \"type\": \"mcq\",\n"
-            "    \"question\": \"Question text here?\",\n"
-            "    \"options\": [\"Option A\", \"Option B\", \"Option C\", \"Option D\"],\n"
-            "    \"correct_answer\": \"Exact text matching the correct option text string\",\n"
-            "    \"explanation\": \"Brief conceptual breakdown explaining the answer.\"\n"
-            "  }\n"
-            "]"
+            "Format your complete response as a valid JSON object matching this schema structure:\n"
+            "{\n"
+            "  \"quiz_questions\": [\n"
+            "    {\n"
+            "      \"id\": \"q_1\",\n"
+            "      \"type\": \"mcq\",\n"
+            "      \"question\": \"Question text here?\",\n"
+            "      \"options\": [\"Option A\", \"Option B\", \"Option C\", \"Option D\"],\n"
+            "      \"correct_answer\": \"Exact text matching the correct option text string\",\n"
+            "      \"explanation\": \"Brief conceptual breakdown explaining the answer.\"\n"
+            "    }\n"
+            "  ]\n"
+            "}\n\n"
+            "If the provided context does not contain enough information to formulate questions on the topic, "
+            "or if the query is outside the scope of the context, you MUST still respond with a valid JSON object "
+            "where `quiz_questions` is an empty list, like: `{\"quiz_questions\": []}`. Do not output any conversational "
+            "refusal text outside of this JSON structure."
         )
         
         user_prompt = f"Topic to test: {node_description}\n\nRetrieved Context:\n{context}"
@@ -48,7 +54,8 @@ class QuizEngine:
             )
             
             raw_content = response.choices[0].message.content
-            return json.loads(raw_content)
+            parsed = json.loads(raw_content)
+            return parsed.get("quiz_questions", [])
         except Exception as e:
             print(f"Error generating quiz: {e}")
             # Graceful hackathon UI placeholder fallback if API drops out or limits trip
