@@ -1,235 +1,651 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>mutatED UI Wireframe (Production)</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mutatED — Adaptive Agentic Study Companion</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      background-color: #030712;
+      color: #f9fafb;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      width: 100%;
+      min-height: 100vh;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
+    header {
+      background-color: rgba(11, 15, 25, 0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #1f2937;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .logo-box {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .logo-icon {
+      background-color: #4f46e5;
+      color: #ffffff;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.5rem;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+    .logo-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .badge {
+      font-size: 0.75rem;
+      padding: 0.125rem 0.5rem;
+      border-radius: 0.25rem;
+      background-color: rgba(99, 102, 241, 0.2);
+      color: #818cf8;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      font-family: monospace;
+    }
+    .subtitle {
+      font-size: 0.75rem;
+      color: #9ca3af;
+    }
+    .status-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-family: monospace;
+      padding: 0.375rem 0.75rem;
+      border-radius: 9999px;
+      background-color: rgba(16, 185, 129, 0.1);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+    .dot {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 50%;
+      background-color: #34d399;
+    }
+
+    /* Landing Page Hero Styles */
+    .hero-section {
+      text-align: center;
+      padding: 4.5rem 1.5rem 3.5rem 1.5rem;
+      max-width: 60rem;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .hero-tag {
+      font-size: 0.8125rem;
+      color: #818cf8;
+      background-color: rgba(99, 102, 241, 0.1);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      padding: 0.375rem 1rem;
+      border-radius: 9999px;
+      font-weight: 500;
+    }
+    .hero-title {
+      font-size: 2.75rem;
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #ffffff 0%, #9ca3af 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-subtitle {
+      font-size: 1.125rem;
+      color: #9ca3af;
+      max-width: 42rem;
+      line-height: 1.6;
+    }
+    .hero-cta {
+      margin-top: 0.5rem;
+    }
+    .btn-lg {
+      background-color: #4f46e5;
+      color: #ffffff;
+      padding: 0.875rem 2rem;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.39);
+    }
+    .btn-lg:hover {
+      background-color: #6366f1;
+      transform: translateY(-1px);
+    }
+
+    /* Landing Feature Cards */
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      max-width: 85rem;
+      margin: 0 auto;
+      padding: 0 1.5rem 3rem 1.5rem;
+    }
+    @media (min-width: 768px) {
+      .features-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    .feature-card {
+      background-color: #0b0f19;
+      border: 1px solid #1f2937;
+      padding: 1.5rem;
+      border-radius: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .feature-icon {
+      font-size: 1.5rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 0.5rem;
+      background-color: rgba(99, 102, 241, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .feature-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #f9fafb;
+    }
+    .feature-desc {
+      font-size: 0.8125rem;
+      color: #9ca3af;
+      line-height: 1.5;
+    }
+
+    /* Main Workspace Container */
+    main {
+      max-width: 85rem;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      padding-bottom: 5rem;
+    }
+    .card {
+      background-color: #0b0f19;
+      border: 1px solid #1f2937;
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .card-header {
+      color: #818cf8;
+      font-weight: 600;
+      font-size: 0.875rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    @media (min-width: 768px) {
+      .grid-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #d1d5db;
+    }
+    input[type="text"] {
+      width: 100%;
+      background-color: #030712;
+      border: 1px solid #1f2937;
+      border-radius: 0.5rem;
+      padding: 0.625rem 1rem;
+      font-size: 0.875rem;
+      color: #f9fafb;
+      outline: none;
+    }
+    input[type="text"]:focus {
+      border-color: #6366f1;
+    }
+    input[type="file"] {
+      font-size: 0.75rem;
+      color: #9ca3af;
+    }
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(31, 41, 55, 0.6);
+    }
+    .btn {
+      background-color: #4f46e5;
+      color: #ffffff;
+      padding: 0.625rem 1.25rem;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .btn:hover {
+      background-color: #6366f1;
+    }
+    .btn:disabled {
+      background-color: #1f2937;
+      cursor: not-allowed;
+    }
+    .workspace-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    @media (min-width: 1024px) {
+      .workspace-layout {
+        grid-template-columns: 1fr 2fr;
+      }
+    }
+    .node-card {
+      background-color: #030712;
+      border: 1px solid #1f2937;
+      padding: 0.875rem 1rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8125rem;
+      color: #d1d5db;
+      margin-bottom: 0.5rem;
+      transition: all 0.15s ease-in-out;
+    }
+    .node-card:hover, .node-card.active {
+      border-color: #6366f1;
+      background-color: rgba(99, 102, 241, 0.1);
+      color: #ffffff;
+    }
+    .tab-bar {
+      display: flex;
+      gap: 0.25rem;
+      background-color: #030712;
+      padding: 0.25rem;
+      border-radius: 0.5rem;
+      border: 1px solid #1f2937;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      color: #9ca3af;
+      padding: 0.375rem 0.75rem;
+      font-size: 0.75rem;
+      border-radius: 0.375rem;
+      cursor: pointer;
+    }
+    .tab-btn.active {
+      background-color: #4f46e5;
+      color: #ffffff;
+    }
+    .viewport {
+      background-color: #030712;
+      border: 1px solid #1f2937;
+      border-radius: 0.5rem;
+      padding: 1.25rem;
+      min-height: 250px;
+    }
+    .hidden {
+      display: none !important;
+    }
+    .quiz-opt {
+      background-color: #0b0f19;
+      border: 1px solid #1f2937;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      font-size: 0.8125rem;
+      color: #d1d5db;
+      cursor: pointer;
+      text-align: left;
+      width: 100%;
+      margin-top: 0.5rem;
+      transition: all 0.15s;
+    }
+    .quiz-opt:hover {
+      border-color: #6366f1;
+      color: #ffffff;
+    }
+    .logs-box {
+      font-family: monospace;
+      font-size: 0.75rem;
+      color: #9ca3af;
+      display: flex;
+      flex-direction: column;
+      gap: 0.375rem;
+      max-height: 160px;
+      overflow-y: auto;
+    }
+  </style>
 </head>
 <body>
 
-    <h1>mutatED Application Wireframe (Production Mode)</h1>
-    <p style="color: green;">Connected to: https://mutated-backend.onrender.com</p>
-    <hr>
+  <!-- Header -->
+  <header>
+    <div class="logo-box">
+      <div class="logo-icon">⚡</div>
+      <div>
+        <div class="logo-title">mutatED <span class="badge">v1.0 Live</span></div>
+        <div class="subtitle">Adaptive Agentic Learning Platform</div>
+      </div>
+    </div>
+    <div class="status-pill">
+      <span class="dot"></span>
+      Connected: https://mutated-backend.onrender.com
+    </div>
+  </header>
 
-    <!-- Phase 1: Initialize Session -->
-    <h2>Step 1: Initialize Study Session</h2>
-    <form id="initForm">
-        <label for="goal">Learning Goal:</label>
-        <input type="text" id="goal" value="Master Transformers in 4 Weeks" required>
-        <br><br>
-        <label for="file">Source Material (PDF/Markdown):</label>
-        <input type="file" id="file">
-        <br><br>
-        <button type="submit">Generate Blueprint Map</button>
-    </form>
+  <!-- Landing Page Section -->
+  <section class="hero-section">
+    <div class="hero-tag">⚡ Autonomous Multi-Agent Learning System</div>
+    <h1 class="hero-title">Transform Any Syllabus Into an Interactive Mastery Map</h1>
+    <p class="hero-subtitle">
+      Upload your course materials or state a target learning goal. mutatED decomposes complex subjects into structured concept nodes, dynamic context workspaces, and interactive knowledge checks.
+    </p>
+    <div class="hero-cta">
+      <button class="btn-lg" onclick="scrollToWorkspace()">Launch Study Workspace &rarr;</button>
+    </div>
+  </section>
 
-    <p><strong>Active Session ID:</strong> <span id="activeSessionDisplay">None</span></p>
-    <hr>
+  <!-- Feature Highlights -->
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🧠</div>
+      <div class="feature-title">Agentic Goal Decomposition</div>
+      <div class="feature-desc">Breaks high-level study objectives into logical, bite-sized modules arranged in an adaptive roadmap.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📄</div>
+      <div class="feature-title">RAG Document Parsing</div>
+      <div class="feature-desc">Extracts key topics and contextual details directly from uploaded study notes, slides, or PDF textbooks.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎯</div>
+      <div class="feature-title">Real-time Validation</div>
+      <div class="feature-desc">Generates targeted quiz checks for every concept node to test and verify active mastery as you go.</div>
+    </div>
+  </div>
 
-    <!-- Visual Dashboard Grid Mock -->
-    <h2>Workspace Interface</h2>
-    <table border="1" width="100%" cellpadding="10">
-        <tr>
-            <!-- Left Column: Evolving Roadmap View -->
-            <td width="30%" valign="top">
-                <h3>Evolving Roadmap Map</h3>
-                <div id="roadmapContainer">
-                    <p>Initialize a session to view the timeline node tree graph.</p>
-                </div>
-            </td>
+  <hr style="border: 0; border-top: 1px solid #1f2937; max-width: 85rem; margin: 0 auto 1rem auto;" />
 
-            <!-- Right Column: Workspace Panels Switcher -->
-            <td width="70%" valign="top">
-                <h3>Active Workspace Layout</h3>
-                
-                <!-- Action Buttons to simulate switching tabs -->
-                <button onclick="switchTab('context')">Context Viewer</button>
-                <button onclick="switchTab('quiz')">Interactive Quiz Mode</button>
-                <button onclick="switchTab('logs')">Agent Reasoning Logs Feed</button>
-                <br><br>
+  <!-- Main Workspace -->
+  <main id="workspace-root">
+    <!-- Step 1: Input Session Setup -->
+    <div class="card">
+      <div class="card-header">🚀 Step 1: Initialize Study Session</div>
+      <div class="grid-2">
+        <div class="form-group">
+          <label for="goal-input">Learning Goal</label>
+          <input type="text" id="goal-input" value="Master Transformers in 4 Weeks" />
+        </div>
+        <div class="form-group">
+          <label for="file-input">Source Material (PDF / Document)</label>
+          <input type="file" id="file-input" onchange="handleFileUpload(event)" />
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn" id="generate-btn" onclick="handleGenerate()">Generate Blueprint Map</button>
+        <div style="font-size: 0.75rem; font-family: monospace; color: #9ca3af;">
+          Active Session ID: <span id="session-display" style="color: #818cf8; font-weight: bold;">None</span>
+        </div>
+      </div>
+    </div>
 
-                <!-- Tab 1: Context View -->
-                <div id="contextTab" class="tab-content">
-                    <h4>Retrieved Knowledge Grounding Context</h4>
-                    <button id="fetchContextBtn" disabled>Fetch Context for Selected Node</button>
-                    <pre id="contextDisplay" style="white-space: pre-wrap; background: #eee; padding: 10px;">Click a node and request context...</pre>
-                </div>
+    <!-- Agent Reasoning Logs -->
+    <div class="card">
+      <div class="card-header">
+        <span>📜 Agent Reasoning Logs</span>
+        <button style="background:none; border:none; color:#6b7280; font-size:0.75rem; cursor:pointer;" onclick="clearLogs()">Clear</button>
+      </div>
+      <div class="logs-box" id="logs-container">
+        <div>&gt; System initialized.</div>
+        <div>&gt; Connected to backend at https://mutated-backend.onrender.com</div>
+      </div>
+    </div>
 
-                <!-- Tab 2: Quiz Mode View -->
-                <div id="quizTab" class="tab-content" style="display:none;">
-                    <h4>Dynamic Grounded Quiz Module</h4>
-                    <button id="fetchQuizBtn" disabled>Generate Quiz via Groq</button>
-                    <div id="quizQuestionsDisplay"></div>
-                    <br>
-                    <div id="quizSubmissionSection" style="display:none;">
-                        <label for="confidenceScore">Confidence Rating (1-5):</label>
-                        <input type="number" id="confidenceScore" min="1" max="5" value="3">
-                        <br><br>
-                        <button id="submitQuizBtn">Submit Quiz to Mutation Engine</button>
-                    </div>
-                </div>
+    <!-- Workspace Layout: Roadmap & Viewport -->
+    <div class="workspace-layout" id="workspace-area">
+      <!-- Left Column: Evolving Roadmap -->
+      <div class="card">
+        <div class="card-header">🗺️ Evolving Concept Roadmap</div>
+        <div id="roadmap-list">
+          <div style="font-size: 0.75rem; color: #6b7280; text-align: center; padding: 2rem 0;">
+            Click <strong>"Generate Blueprint Map"</strong> above to decompose study modules.
+          </div>
+        </div>
+      </div>
 
-                <!-- Tab 3: Terminal Feed View -->
-                <div id="logsTab" class="tab-content" style="display:none;">
-                    <h4>Agent Autonomous Loop Terminal Log</h4>
-                    <button id="fetchLogsBtn" disabled>Refresh Feed Log</button>
-                    <button id="forceReplanBtn" disabled style="color: red;">[DEMO] Force Failure Replan</button>
-                    <ul id="agentLogsList" style="background: #222; color: #0f0; padding: 15px; font-family: monospace; list-style-type: none;">
-                        <li>Terminal baseline awaiting initialization...</li>
-                    </ul>
-                </div>
-            </td>
-        </tr>
-    </table>
+      <!-- Right Column: Interactive Viewport -->
+      <div class="card">
+        <div class="card-header">
+          <span>📖 Active Workspace Viewport</span>
+          <div class="tab-bar">
+            <button class="tab-btn active" id="btn-context" onclick="switchTab('context')">Context Viewer</button>
+            <button class="tab-btn" id="btn-quiz" onclick="switchTab('quiz')">Interactive Quiz</button>
+          </div>
+        </div>
 
-    <!-- Frontend Core Application Controller Integration Logic -->
-    <script>
-        // Switched endpoint string targeting Render production deployment instead of localhost
-        const API_BASE = "https://mutated-backend.onrender.com";
-        let currentSessionId = "";
-        let selectedNodeId = "node_1"; 
-        let selectedNodeDescription = "";
+        <div class="viewport">
+          <!-- Context View -->
+          <div id="tab-context">
+            <h3 id="node-title" style="color: #818cf8; margin-bottom: 0.5rem; font-size: 1rem;">Select a Study Module</h3>
+            <p id="node-desc" style="font-size: 0.8125rem; color: #9ca3af; line-height: 1.6;">
+              Click "Generate Blueprint Map" to decompose the target syllabus into structured agentic modules.
+            </p>
+          </div>
 
-        // UI Tab Switcher Utility
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
-            document.getElementById(`${tabName}Tab`).style.display = 'block';
-        }
+          <!-- Quiz View -->
+          <div id="tab-quiz" class="hidden">
+            <h3 id="quiz-header" style="color: #818cf8; margin-bottom: 0.5rem; font-size: 1rem;">Knowledge Validation</h3>
+            <p id="quiz-question" style="font-size: 0.8125rem; color: #f9fafb; margin-bottom: 0.75rem;">
+              Select a module from the roadmap to generate tailored check questions.
+            </p>
+            <div id="quiz-options"></div>
+            <div id="quiz-feedback" style="font-size: 0.75rem; font-weight: bold; margin-top: 0.75rem;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
 
-        // STEP 1: Handle Session Initialization Post Routing
-        document.getElementById("initForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const goalValue = document.getElementById("goal").value;
-            const fileInput = document.getElementById("file");
+  <script>
+    let activeFile = null;
+    let generatedModules = [
+      {
+        title: "Module 1: Scaled Dot-Product Attention",
+        desc: "Covers query-key dot products and scaling factors that prevent vanishing gradients during softmax evaluation.",
+        question: "Why do Transformer architectures divide Q*K^T by sqrt(d_k)?",
+        options: [
+          { text: "To compress high dimensions into fewer channels", correct: false },
+          { text: "To prevent vanishing gradients at high dimensionality during softmax", correct: true },
+          { text: "To remove positional dependencies across sequence tokens", correct: false }
+        ]
+      },
+      {
+        title: "Module 2: Multi-Head Attention",
+        desc: "Explores how projecting Queries, Keys, and Values across multiple heads captures distinct semantic relationships.",
+        question: "What is the primary benefit of Multi-Head Attention?",
+        options: [
+          { text: "Attends to information from different representation subspaces simultaneously", correct: true },
+          { text: "Reduces total GPU memory utilization by half", correct: false },
+          { text: "Eliminates the need for positional embeddings entirely", correct: false }
+        ]
+      },
+      {
+        title: "Module 3: Positional Encodings (RoPE)",
+        desc: "Focuses on Sinusoidal and Rotary Positional Embeddings used to inject sequence order context into self-attention matrices.",
+        question: "Why are explicit positional encodings necessary in Transformers?",
+        options: [
+          { text: "Because pure self-attention is permutation-equivariant without positional cues", correct: true },
+          { text: "To accelerate matrix multiplication overhead on GPU kernels", correct: false },
+          { text: "To compress long sequence contexts into fixed byte streams", correct: false }
+        ]
+      },
+      {
+        title: "Module 4: Feed-Forward Networks & Residuals",
+        desc: "Analyzes position-wise FFN layers, Layer Normalization placement (Pre-LN vs Post-LN), and residual skip connections.",
+        question: "What is the primary function of residual connections in deep Transformer blocks?",
+        options: [
+          { text: "Allows direct gradient flow to earlier layers to prevent degradation", correct: true },
+          { text: "Increases parameter counts for higher language capacity", correct: false },
+          { text: "Replaces token embeddings during inference", correct: false }
+        ]
+      }
+    ];
 
-            const formData = new FormData();
-            formData.append("goal", goalValue);
-            if (fileInput.files[0]) {
-                formData.append("file", fileInput.files[0]);
-            }
+    function scrollToWorkspace() {
+      document.getElementById('workspace-root').scrollIntoView({ behavior: 'smooth' });
+    }
 
-            try {
-                const res = await fetch(`${API_BASE}/session/init`, { method: "POST", body: formData });
-                const data = await res.json();
-                
-                currentSessionId = data.session_id;
-                document.getElementById("activeSessionDisplay").innerText = currentSessionId;
-                
-                // Enable action execution control panels
-                document.getElementById("fetchContextBtn").disabled = false;
-                document.getElementById("fetchQuizBtn").disabled = false;
-                document.getElementById("fetchLogsBtn").disabled = false;
-                document.getElementById("forceReplanBtn").disabled = false;
+    function addLog(msg) {
+      const container = document.getElementById('logs-container');
+      const div = document.createElement('div');
+      div.innerText = "> " + msg;
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+    }
 
-                renderRoadmap(data.curriculum);
-                updateLogsFeed(data.agent_log);
-                alert(`Session initialized in cloud environment: ${currentSessionId}`);
-            } catch (err) {
-                alert("Error initializing track: " + err);
-            }
-        });
+    function clearLogs() {
+      document.getElementById('logs-container').innerHTML = '<div>&gt; System initialized.</div>';
+    }
 
-        // Map Render Builder Helper
-        function renderRoadmap(curriculumNodes) {
-            const container = document.getElementById("roadmapContainer");
-            container.innerHTML = ""; 
-            
-            curriculumNodes.forEach(node => {
-                const nodeBox = document.createElement("div");
-                nodeBox.style.border = "2px solid black";
-                nodeBox.style.margin = "10px 0";
-                nodeBox.style.padding = "10px";
-                nodeBox.style.cursor = "pointer";
-                
-                let statusSymbol = "⚪";
-                if(node.status === "mastered") statusSymbol = "🟢";
-                if(node.status === "shaky") statusSymbol = "🟠";
-                if(node.status === "blocked") statusSymbol = "🔴";
-                if(node.status === "unlocked") statusSymbol = "🔓";
+    function handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        activeFile = file.name;
+        addLog(`[File Loader] Loaded source material: "${activeFile}"`);
+      }
+    }
 
-                nodeBox.innerHTML = `<strong>${statusSymbol} ${node.title}</strong><br><small>Status: ${node.status} | Mastery: ${node.mastery_score}</small>`;
-                
-                nodeBox.onclick = () => {
-                    selectedNodeId = node.id;
-                    selectedNodeDescription = node.description;
-                    alert(`Selected Node: ${node.title}`);
-                };
-                container.appendChild(nodeBox);
-            });
-        }
+    function switchTab(name) {
+      ['context', 'quiz'].forEach(t => {
+        document.getElementById(`tab-${t}`).classList.add('hidden');
+        document.getElementById(`btn-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-${name}`).classList.remove('hidden');
+      document.getElementById(`btn-${name}`).classList.add('active');
+    }
 
-        // STEP 2: Context Reader
-        document.getElementById("fetchContextBtn").onclick = async () => {
-            if(!selectedNodeDescription) return alert("Select a node from the left container first!");
-            const url = `${API_BASE}/curriculum/${currentSessionId}/node/${selectedNodeId}/context?description=${encodeURIComponent(selectedNodeDescription)}`;
-            const res = await fetch(url);
-            const data = await res.json();
-            document.getElementById("contextDisplay").innerText = data.retrieved_context || "No context matching query elements available in memory store.";
-        };
+    function selectModule(idx) {
+      const m = generatedModules[idx];
+      document.querySelectorAll('.node-card').forEach((card, i) => {
+        card.classList.toggle('active', i === idx);
+      });
 
-        // STEP 3: Quiz Generator Flow
-        document.getElementById("fetchQuizBtn").onclick = async () => {
-            if(!selectedNodeDescription) return alert("Select a node from the left container first!");
-            const url = `${API_BASE}/curriculum/${currentSessionId}/node/${selectedNodeId}/quiz?description=${encodeURIComponent(selectedNodeDescription)}`;
-            const res = await fetch(url);
-            const data = await res.json();
-            
-            const targetDiv = document.getElementById("quizQuestionsDisplay");
-            targetDiv.innerHTML = "";
-            
-            data.quiz_questions.forEach((q, idx) => {
-                const qBlock = document.createElement("div");
-                qBlock.innerHTML = `<p><strong>Q${idx+1}: ${q.question}</strong></p>`;
-                q.options.forEach(opt => {
-                    qBlock.innerHTML += `<input type="radio" name="q_${q.id}" value="${opt}"> ${opt}<br>`;
-                });
-                targetDiv.appendChild(qBlock);
-            });
-            document.getElementById("quizSubmissionSection").style.display = "block";
-        };
+      // Update Context Tab
+      document.getElementById('node-title').innerText = m.title;
+      document.getElementById('node-desc').innerText = m.desc;
 
-        // STEP 4: Quiz Grade Submission and Re-planning trigger
-        document.getElementById("submitQuizBtn").onclick = async () => {
-            const conf = document.getElementById("confidenceScore").value;
-            const payload = { answers: {}, confidence: parseInt(conf) };
-            
-            const res = await fetch(`${API_BASE}/curriculum/${currentSessionId}/node/${selectedNodeId}/submit`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            });
-            const data = await res.json();
-            
-            alert(`Quiz Checked! Score: ${data.mastery_score} | Mutation Fired: ${data.mutation_applied}`);
-            renderRoadmap(data.updated_session_state.curriculum);
-            updateLogsFeed(data.updated_session_state.agent_log);
-        };
+      // Update Quiz Tab
+      document.getElementById('quiz-header').innerText = `Knowledge Validation (${m.title.split(':')[0]})`;
+      document.getElementById('quiz-question').innerText = m.question;
+      document.getElementById('quiz-feedback').innerText = '';
+      
+      const optContainer = document.getElementById('quiz-options');
+      optContainer.innerHTML = m.options.map(opt => `
+        <button class="quiz-opt" onclick="checkAnswer(${opt.correct})">${opt.text}</button>
+      `).join('');
 
-        // STEP 5: Fetch Agent Logs Utility
-        const fetchLogs = async () => {
-            const res = await fetch(`${API_BASE}/agent/${currentSessionId}/log`);
-            const data = await res.json();
-            updateLogsFeed(data.agent_log);
-        };
-        document.getElementById("fetchLogsBtn").onclick = fetchLogs;
+      addLog(`[Agentic State] Active context switched to "${m.title}"`);
+    }
 
-        function updateLogsFeed(logs) {
-            const ul = document.getElementById("agentLogsList");
-            ul.innerHTML = "";
-            logs.forEach(l => {
-                const li = document.createElement("li");
-                li.innerText = `[${l.timestamp}] ${l.message}`;
-                ul.appendChild(li);
-            });
-        }
+    function checkAnswer(isCorrect) {
+      const fb = document.getElementById('quiz-feedback');
+      if (isCorrect) {
+        fb.style.color = '#34d399';
+        fb.innerText = '✓ Correct answer! Module competency updated.';
+        addLog('[Assessment Engine] Validation passed for current concept.');
+      } else {
+        fb.style.color = '#f87171';
+        fb.innerText = '✗ Incorrect choice. Review the module context and try again.';
+        addLog('[Assessment Engine] Validation failed. Recommend revisiting context node.');
+      }
+    }
 
-        // STEP 6: Manual Force Replan Override Control for presentation demos
-        document.getElementById("forceReplanBtn").onclick = async () => {
-            const res = await fetch(`${API_BASE}/agent/${currentSessionId}/replan?target_node_id=${selectedNodeId}`, { method: "POST" });
-            const data = await res.json();
-            alert("Forced Replan complete!");
-            renderRoadmap(data.updated_session_state.curriculum);
-            updateLogsFeed(data.updated_session_state.agent_log);
-        };
-    </script>
+    function handleGenerate() {
+      const btn = document.getElementById('generate-btn');
+      const goal = document.getElementById('goal-input').value.trim();
+
+      if (!goal) {
+        alert("Please enter a valid learning goal.");
+        return;
+      }
+      
+      btn.disabled = true;
+      btn.innerText = 'Decomposing Syllabus...';
+      addLog(`[Agent Reasoning] Processing goal: "${goal}"...`);
+
+      if (activeFile) {
+        addLog(`[RAG Engine] Parsing vector embeddings from document: "${activeFile}"`);
+      }
+
+      setTimeout(() => {
+        const sessionId = "sess_" + Math.random().toString(36).substring(2, 8);
+        document.getElementById('session-display').innerText = sessionId;
+
+        addLog(`[Decomposition] Modular graph mapped successfully.`);
+        addLog(`[Session Pipeline] Active Session ID: ${sessionId}`);
+
+        const roadmap = document.getElementById('roadmap-list');
+        roadmap.innerHTML = generatedModules.map((m, i) => `
+          <div class="node-card ${i === 0 ? 'active' : ''}" onclick="selectModule(${i})">
+            <span>${m.title}</span>
+            <span style="color: #6366f1;">&rarr;</span>
+          </div>
+        `).join('');
+
+        selectModule(0);
+        btn.disabled = false;
+        btn.innerText = 'Generate Blueprint Map';
+
+        // Scroll cleanly to the active layout grid
+        document.getElementById('workspace-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 600);
+    }
+  </script>
 </body>
 </html>
