@@ -1,4 +1,4 @@
-# 🚀 mutatED Backend Service (NextGen)
+# 🚀 mutatED Backend Service
 
 Welcome to the **mutatED** backend repository. This project is a dedicated, production-hosted FastAPI AI Agent service that provides localized Retrieval-Augmented Generation (RAG) and autonomous AI planning loops for **OmniVault**.
 
